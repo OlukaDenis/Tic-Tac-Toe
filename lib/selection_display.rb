@@ -2,10 +2,12 @@
 
 class Selector
   def selection(_player, num, ob)
-    ob.to_i
     ob.each do |n|
-      n = num if n == num
+      next unless n.include? num
+      
+      n.map! do |ele|
+        ele == num ? _player : ele
+      end
     end
-    ob
   end
 end

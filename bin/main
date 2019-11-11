@@ -1,45 +1,57 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-require_relative "../lib/InBoard"
+require_relative "../lib/board"
 require_relative "../lib/selection_display"
 require_relative "../lib/check_player"
 
 
-$player_one = ""
+$player_one
 $player_two = ""
 $is_player_one_turn = true
 $turn = 0
-
-
+$new_board = Board.new.board
 
 def init_board
-new_board = InBoard.new
 puts "--------------"
-  new_board.board.each do |n| 
+  $new_board.each do |n| 
     puts n.join ("  |  ")  
     puts "--------------"
   end
 end
 
 
-puts 'The game is on!'
+
+puts 'THE GAME IS ON!'
 puts '-----------------------'
-puts 'Game will start select a valid input for your play (Any number from 0~9)'
+puts 'Game will start select a valid input for your play (Any number from 1~9)'
 init_board
 
 while $turn < 9
   if $is_player_one_turn
     puts "Player X's turn, make your pick"
     player_one = gets.to_i
-    if player_one < 1 || player_one > 9
-      Selector.selection("X", $player_one.to_i, new_board)
+    if player_one > 0 && player_one < 10  
+    up_board = Selector.new.selection("X", player_one.to_s, $new_board)
+    Board.new.updated_board(up_board)
+    init_board
+    $turn += 1
+    $is_player_one_turn = false
     else
-      puts "not working"
+      puts "Wrong input, Choose any number from 1~9"
     end
     
   else
-    puts "Not Working"
-    
+    puts "Player O's turn, make your pick"
+    player_two = gets.to_i
+    if player_two > 0 && player_two < 10  
+    up_board = Selector.new.selection("O", player_two.to_s, $new_board)
+    Board.new.updated_board(up_board)
+    init_board
+    $turn += 1
+    $is_player_one_turn = true 
+    else
+      puts "Wrong input, Choose any number from 1~9"
+    end   
   end
 
 end
