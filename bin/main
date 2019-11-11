@@ -1,23 +1,49 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-require_relative('../lib/board')
-require_relative('../lib/check_player')
+require_relative "../lib/InBoard"
+require_relative "../lib/selection_display"
+require_relative "../lib/check_player"
+
 
 $player_one = ""
 $player_two = ""
-valid = true
+$is_player_one_turn = true
+$turn = 0
 
-board = Board.new
-def initialize_board
-  board.initialize
+
+
+def init_board
+new_board = InBoard.new
 puts "--------------"
-  board.each do |n| 
+  new_board.board.each do |n| 
     puts n.join ("  |  ")  
     puts "--------------"
   end
 end
 
-initialize_board
+
+puts 'The game is on!'
+puts '-----------------------'
+puts 'Game will start select a valid input for your play (Any number from 0~9)'
+init_board
+
+while $turn < 9
+  if $is_player_one_turn
+    puts "Player X's turn, make your pick"
+    player_one = gets.to_i
+    if player_one < 1 || player_one > 9
+      Selector.selection("X", $player_one.to_i, new_board)
+    else
+      puts "not working"
+    end
+    
+  else
+    puts "Not Working"
+    
+  end
+
+end
+
 # # Check for win and display winner
 # def winner
 #   puts 'Here we define if a winner is found if it is we display the winner'
