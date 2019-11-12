@@ -1,25 +1,44 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-require_relative "../lib/board"
-require_relative "../lib/selection_display"
-require_relative "../lib/check_player"
 
+require_relative '../lib/board'
+require_relative '../lib/selection_display'
+require_relative '../lib/check_player'
 
-$player_one
-$player_two = ""
+$player_pick = ''
 $is_player_one_turn = true
 $turn = 0
-$new_board = Board.new.board
+$board_controller = Board.new
+$local_selector = Selector.new
 
 def init_board
-puts "--------------"
-  $new_board.each do |n| 
-    puts n.join ("  |  ")  
-    puts "--------------"
+  puts '--------------'
+  $board_controller.board.each do |n|
+    puts n.join '  |  '
+    puts '--------------'
   end
 end
 
-
+def display_player_move(player_mark)
+  puts 'Player ' + player_mark + "'s turn, make your pick"
+  puts '--------------'
+  player_pick = gets.to_i
+  if player_pick > 0 && player_pick < 10 && $local_selector.is_valid?(player_pick.to_s, $board_controller.board)
+    $board_controller.board = $local_selector.selection(player_mark, player_pick.to_s, $board_controller.board)
+    init_board
+    $turn += 1
+    $is_player_one_turn = player_mark != 'X'
+    if $board_controller.check_for_winner($board_controller.board)[0] == true
+      puts '--------------'
+      puts 'GameOver!! player ' +$board_controller.check_for_winner($board_controller.board)[1]+ "'s" + ' has WON the game!!'
+      puts '--------------'
+      $turn = 10
+    end
+  else
+    puts '--------------'
+    puts 'Wrong input, Choose any number from 1~9 and be sure your selection is not taken'
+  end
+end
 
 puts 'THE GAME IS ON!'
 puts '-----------------------'
@@ -28,96 +47,13 @@ init_board
 
 while $turn < 9
   if $is_player_one_turn
-    puts "Player X's turn, make your pick"
-    player_one = gets.to_i
-    if player_one > 0 && player_one < 10  
-    up_board = Selector.new.selection("X", player_one.to_s, $new_board)
-    Board.new.updated_board(up_board)
-    init_board
-    $turn += 1
-    $is_player_one_turn = false
-    else
-      puts "Wrong input, Choose any number from 1~9"
-    end
+    display_player_move('X')
     
   else
-    puts "Player O's turn, make your pick"
-    player_two = gets.to_i
-    if player_two > 0 && player_two < 10  
-    up_board = Selector.new.selection("O", player_two.to_s, $new_board)
-    Board.new.updated_board(up_board)
-    init_board
-    $turn += 1
-    $is_player_one_turn = true 
-    else
-      puts "Wrong input, Choose any number from 1~9"
-    end   
+    display_player_move('O')
   end
-
 end
 
-# # Check for win and display winner
-# def winner
-#   puts 'Here we define if a winner is found if it is we display the winner'
-#   false
-# end
-# # Here we end the game either called by winner method or if the turn is > 9
-
-# def game_over
-#   puts 'Game over'
-# end
-# puts 'The game is on!'
-# puts '-----------------------'
-# puts 'Game will start select a valid input for your play (Any number from 0~9)'
-
-# # Displaying the board
-# puts 'Display the game board'
-
-# while turn < 9
-#   if player
-#     puts "Player One's turn"
-#     player_one = gets.to_i
-#     if player_one < 1 || player_one > 9
-#       puts 'Wrong input'
-#     else
-#       puts "Player's selection displayed one the board"
-#       player = false
-#       if choices.include? player_one
-#         puts 'Choice already taken, Please choose another choice!'
-#       else
-#         choices << player_one
-#         turn += 1
-
-#         win = winner
-#         if win
-#           # Display the player who has won
-#           game_over
-#         end
-#       end
-
-#     end
-#   else
-#     puts "Player two's turn"
-#     player_two = gets.to_i
-#     if player_two < 1 || player_two > 9
-#       puts 'Wrong input'
-#     else
-#       puts "Player's selection displayed one the board"
-#       player = true
-#       if choices.include? player_two
-#         puts 'Choice already taken, Please choose another choice!'
-#       else
-#         choices << player_two
-#         turn += 1
-
-#         win = winner
-#         if win
-#           # Display the player who has won
-#           game_over
-#         end
-#       end
-#     end
-#   end
-
-# end
-# game_over
+if $turn == 9 && $board_controller.check_for_winner($board_controller.board)[0] == false
+  puts "What a game!! we have a draw! Better luck next time!!"
+end
