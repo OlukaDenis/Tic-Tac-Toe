@@ -3,7 +3,6 @@
 
 require_relative '../lib/board'
 require_relative '../lib/selection_display'
-require_relative '../lib/check_player'
 
 $player_pick = ''
 $is_player_one_turn = true
@@ -23,7 +22,7 @@ def display_player_move(player_mark)
   puts 'Player ' + player_mark + "'s turn, make your pick"
   puts '--------------'
   player_pick = gets.to_i
-  if player_pick > 0 && player_pick < 10 && $local_selector.is_valid?(player_pick.to_s, $board_controller.board)
+  if player_pick > 0 && player_pick < 10 && $local_selector.valid?(player_pick.to_s, $board_controller.board)
     $board_controller.board = $local_selector.selection(player_mark, player_pick.to_s, $board_controller.board)
     init_board
     $turn += 1
