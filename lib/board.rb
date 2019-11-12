@@ -7,9 +7,6 @@ class Board
     @board = [%w[1 2 3], %w[4 5 6], %w[7 8 9]]
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
-
   def check_for_winner(boardstate)
     current_b = boardstate[0] + boardstate[1] + boardstate[2]
 
@@ -27,5 +24,3 @@ class Board
   end
 end
 
-# rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/PerceivedComplexity

@@ -10,8 +10,6 @@ class Selector
       end
     end
   end
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
 
   def valid?(num, obj)
     selec_index = convert_to_index(num)
@@ -47,5 +45,3 @@ module Enumerable
     array.any? { |i| include? i }
   end
 end
-# rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/PerceivedComplexity
