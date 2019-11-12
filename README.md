@@ -20,7 +20,9 @@ If you have any trouble, request, or suggestion, create an issue or pull request
 # :point_right: How to play
 
 1. The board is built as a sucession of ascending numbers that start from 1 through to 9, the image below represents the board positions.
-   ![](images/tictactoe2..png)
+
+![](images/tictactoe2..png)
+
 2. The game then displays player X to start the game. The other player is assigned O.
 3. The first player picks a number from 1~9 to reflect the move.
 4. Every single move a player makes updates the board, and it will be shown
