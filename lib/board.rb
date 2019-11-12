@@ -23,4 +23,3 @@ class Board
     [false, nil]
   end
 end
-
