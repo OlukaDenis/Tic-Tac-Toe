@@ -10,18 +10,20 @@ class Selector
       end
     end
   end
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
 
   def valid?(num, obj)
-    selecIndex = convert_to_index(num)
+    selec_index = convert_to_index(num)
     col = []
     obj.each_with_index do |n, index|
-      col = n if index == selecIndex[0]
+      col = n if index == selec_index[0]
     end
 
     if col.include_any?(%w[X O])
 
       col.each_with_index do |x, i|
-        return false if x == 'X' && i == selecIndex[1] || x == 'O' && i == selecIndex[1]
+        return false if x == 'X' && i == selec_index[1] || x == 'O' && i == selec_index[1]
       end
     end
     true
@@ -38,7 +40,6 @@ class Selector
     return [2, 1] if num == '8'
     return [2, 2] if num == '9'
   end
-  
 end
 
 module Enumerable
@@ -46,3 +47,5 @@ module Enumerable
     array.any? { |i| include? i }
   end
 end
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
