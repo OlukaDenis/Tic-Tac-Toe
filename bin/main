@@ -4,34 +4,32 @@
 require_relative '../lib/board'
 require_relative '../lib/selection_display'
 
-$player_pick = ''
-$is_player_one_turn = true
-$turn = 0
-$board_controller = Board.new
-$local_selector = Selector.new
+board_controller = Board.new
+local_selector = Selector.new
 
-def init_board
+
+def init_board(board_c)
   puts '--------------'
-  $board_controller.board.each do |n|
+  board_c.board.each do |n|
     puts n.join '  |  '
     puts '--------------'
   end
 end
 
-def display_player_move(player_mark)
+def display_player_move(player_mark, board_c, local_s)
   puts 'Player ' + player_mark + "'s turn, make your pick"
   puts '--------------'
   player_pick = gets.to_i
-  if player_pick > 0 && player_pick < 10 && $local_selector.valid?(player_pick.to_s, $board_controller.board)
-    $board_controller.board = $local_selector.selection(player_mark, player_pick.to_s, $board_controller.board)
-    init_board
-    $turn += 1
-    $is_player_one_turn = player_mark != 'X'
-    if $board_controller.check_for_winner($board_controller.board)[0] == true
+  if player_pick > 0 && player_pick < 10 && local_s.valid?(player_pick.to_s, board_c.board)
+    board_c.board = local_s.selection(player_mark, player_pick.to_s, board_c.board)
+    init_board(board_c)
+    board_c.add_turn
+    board_c.switch_player
+    if board_c.check_for_winner(board_c.board)[0] == true
       puts '--------------'
-      puts 'GameOver!! player ' +$board_controller.check_for_winner($board_controller.board)[1]+ ' has WON the game!!'
+      puts 'GameOver!! player ' + board_c.check_for_winner(board_c.board)[1] + ' has WON the game!!'
       puts '--------------'
-      $turn = 10
+      board_c.end_game
     end
   else
     puts '--------------'
@@ -42,16 +40,16 @@ end
 puts 'THE GAME IS ON!'
 puts '-----------------------'
 puts 'Game will start select a valid input for your play (Any number from 1~9)'
-init_board
+init_board(board_controller)
 
-while $turn < 9
-  if $is_player_one_turn
-    display_player_move('X')
+while board_controller.turn < 9
+  if board_controller.player_one_turn
+    display_player_move('X', board_controller, local_selector)
   else
-    display_player_move('O')
+    display_player_move('O', board_controller, local_selector)
   end
 end
 
-if $turn == 9 && $board_controller.check_for_winner($board_controller.board)[0] == false
-  puts "What a game!! we have a draw! Better luck next time!!"
+if board_controller.turn == 9 && board_controller.check_for_winner(board_controller.board)[0] == false
+  puts 'What a game!! we have a draw! Better luck next time!!'
 end
