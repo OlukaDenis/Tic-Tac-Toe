@@ -29,7 +29,7 @@ def display_player_move(player_mark)
     $is_player_one_turn = player_mark != 'X'
     if $board_controller.check_for_winner($board_controller.board)[0] == true
       puts '--------------'
-      puts 'GameOver!! player ' +$board_controller.check_for_winner($board_controller.board)[1]+ "'s" + ' has WON the game!!'
+      puts 'GameOver!! player ' +$board_controller.check_for_winner($board_controller.board)[1]+ ' has WON the game!!'
       puts '--------------'
       $turn = 10
     end
@@ -47,7 +47,6 @@ init_board
 while $turn < 9
   if $is_player_one_turn
     display_player_move('X')
-    
   else
     display_player_move('O')
   end
