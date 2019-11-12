@@ -2,11 +2,8 @@
 # frozen_string_literal: true
 
 require_relative '../lib/board'
-require_relative '../lib/selection_display'
 
 board_controller = Board.new
-local_selector = Selector.new
-
 
 def init_board(board_c)
   puts '--------------'
@@ -16,16 +13,16 @@ def init_board(board_c)
   end
 end
 
-def display_player_move(player_mark, board_c, local_s)
+def display_player_move(player_mark, board_c)
   puts 'Player ' + player_mark + "'s turn, make your pick"
   puts '--------------'
   player_pick = gets.to_i
-  if player_pick > 0 && player_pick < 10 && local_s.valid?(player_pick.to_s, board_c.board)
-    board_c.board = local_s.selection(player_mark, player_pick.to_s, board_c.board)
+  if player_pick > 0 && player_pick < 10 && board_c.valid?(player_pick.to_s)
+    board_c.selection(player_mark, player_pick.to_s)
     init_board(board_c)
     board_c.add_turn
     board_c.switch_player
-    if board_c.check_for_winner(board_c.board)[0] == true
+    if board_c.check_for_winner(1)[0] == true
       puts '--------------'
       puts 'GameOver!! player ' + board_c.check_for_winner(board_c.board)[1] + ' has WON the game!!'
       puts '--------------'
@@ -44,12 +41,12 @@ init_board(board_controller)
 
 while board_controller.turn < 9
   if board_controller.player_one_turn
-    display_player_move('X', board_controller, local_selector)
+    display_player_move('X', board_controller)
   else
-    display_player_move('O', board_controller, local_selector)
+    display_player_move('O', board_controller)
   end
 end
 
-if board_controller.turn == 9 && board_controller.check_for_winner(board_controller.board)[0] == false
+if board_controller.turn == 9 && board_controller.check_for_winner(1)[0] == false
   puts 'What a game!! we have a draw! Better luck next time!!'
 end
