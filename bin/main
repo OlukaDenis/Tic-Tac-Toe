@@ -1,72 +1,52 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-turn = 0
-player = true
-choices = [0]
+require_relative '../lib/board'
 
-# Check for win and display winner
-def winner
-  puts 'Here we define if a winner is found if it is we display the winner'
-  false
+board_controller = Board.new
+
+def init_board(board_c)
+  puts '--------------'
+  board_c.board.each do |n|
+    puts n.join '  |  '
+    puts '--------------'
+  end
 end
-# Here we end the game either called by winner method or if the turn is > 9
 
-def game_over
-  puts 'Game over'
-end
-puts 'The game is on!'
-puts '-----------------------'
-puts 'Game will start select a valid input for your play (Any number from 0~9)'
-
-# Displaying the board
-puts 'Display the game board'
-
-while turn < 9
-  if player
-    puts "Player One's turn"
-    player_one = gets.to_i
-    if player_one < 1 || player_one > 9
-      puts 'Wrong input'
-    else
-      puts "Player's selection displayed one the board"
-      player = false
-      if choices.include? player_one
-        puts 'Choice already taken, Please choose another choice!'
-      else
-        choices << player_one
-        turn += 1
-
-        win = winner
-        if win
-          # Display the player who has won
-          game_over
-        end
-      end
-
+def display_player_move(player_mark, board_c)
+  puts 'Player ' + player_mark + "'s turn, make your pick"
+  puts '--------------'
+  player_pick = gets.to_i
+  if player_pick > 0 && player_pick < 10 && board_c.valid?(player_pick.to_s)
+    board_c.selection(player_mark, player_pick.to_s)
+    init_board(board_c)
+    board_c.add_turn
+    board_c.switch_player
+    if board_c.check_for_winner(1)[0] == true
+      puts '--------------'
+      puts 'GameOver!! player ' + board_c.check_for_winner(board_c.board)[1] + ' has WON the game!!'
+      puts '--------------'
+      board_c.end_game
     end
   else
-    puts "Player two's turn"
-    player_two = gets.to_i
-    if player_two < 1 || player_two > 9
-      puts 'Wrong input'
-    else
-      puts "Player's selection displayed one the board"
-      player = true
-      if choices.include? player_two
-        puts 'Choice already taken, Please choose another choice!'
-      else
-        choices << player_two
-        turn += 1
-
-        win = winner
-        if win
-          # Display the player who has won
-          game_over
-        end
-      end
-    end
+    puts '--------------'
+    puts 'Wrong input, Choose any number from 1~9 and be sure your selection is not taken'
   end
-
 end
-game_over
+
+puts 'THE GAME IS ON!'
+puts '-----------------------'
+puts 'Game will start select a valid input for your play (Any number from 1~9)'
+init_board(board_controller)
+
+while board_controller.turn < 9
+  if board_controller.player_one_turn
+    display_player_move('X', board_controller)
+  else
+    display_player_move('O', board_controller)
+  end
+end
+
+if board_controller.turn == 9 && board_controller.check_for_winner(1)[0] == false
+  puts 'What a game!! we have a draw! Better luck next time!!'
+end
