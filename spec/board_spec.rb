@@ -49,7 +49,7 @@ RSpec.describe 'Board Values and Methods' do
     testcase = 1
     while testcase < 10
       expect(testing.valid?(testcase.to_s)).to be_truthy
-      testcase +=1
+      testcase += 1
     end
   end
 
@@ -59,8 +59,7 @@ RSpec.describe 'Board Values and Methods' do
     while testcase < 10
       testing.selection('X', testcase.to_s)
       expect(testing.valid?(testcase.to_s)).to be_falsy
-      testcase +=1
+      testcase += 1
     end
   end
-
 end
