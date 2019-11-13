@@ -53,7 +53,7 @@ RSpec.describe 'Board Values and Methods' do
     end
   end
 
-  it 'valid? to return false when input is valid' do
+  it 'valid? to return false when input is invalid' do
     testing = Board.new
     testcase = 1
     while testcase < 10
