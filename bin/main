@@ -22,9 +22,9 @@ def display_player_move(player_mark, board_c)
     init_board(board_c)
     board_c.add_turn
     board_c.switch_player
-    if board_c.check_for_winner(1)[0] == true
+    if board_c.check_for_winner[0] == true
       puts '--------------'
-      puts 'GameOver!! player ' + board_c.check_for_winner(1)[1] + ' has WON the game!!'
+      puts 'GameOver!! player ' + board_c.check_for_winner[1] + ' has WON the game!!'
       puts '--------------'
       board_c.end_game
     end
