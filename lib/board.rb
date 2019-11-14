@@ -21,7 +21,7 @@ class Board
     end
   end
 
-  def check_for_winner(_board_elem)
+  def check_for_winner
     current_b = @board[0] + @board[1] + @board[2]
 
     return [true, current_b[0]] if current_b[0] == current_b[1] && current_b[1] == current_b[2]
